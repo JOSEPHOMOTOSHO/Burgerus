@@ -62,7 +62,7 @@ const registerUser = async (payload: obj): Promise<any> => {
 }
 
 const loginUser = async (payload: obj) => {
-    const existingUser = await findUserByEmail(payload.email);
+    const existingUser = await findUserByEmail(payload.email.toLowerCase());
     if (!existingUser) {
         return generateResponse(false, "USER_NOT_FOUND", {})
     }
@@ -112,11 +112,26 @@ const updateUser = async (user:obj, payload:obj):Promise<any> => {
     return generateResponse(true,"UPDATE_SUCCESS",{user:updateExistingUser})
 }
 
+const findMatch = async (match: obj ): Promise<any> => {
+    return await User.findOne(match)
+}
+
+const findUser = async (payload: obj ): Promise<any> => {
+    const user = await findMatch(payload);
+    if(!user){
+        return generateResponse(false,"USER_NOT_FOUND",{})
+    }
+    user.set("password",undefined);
+    return generateResponse(true,"USER_FOUND",user)
+
+}
+
 export {
     registerUser,
     loginUser,
     verifyToken,
-    updateUser
+    updateUser,
+    findUser
 }
 /*To resgister a user
 //finduserByEmail

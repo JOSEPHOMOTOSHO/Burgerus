@@ -32,7 +32,6 @@ const sendErrorResponse = (
     statusCode: number = 400
 ) => {
     Sentry.captureException(new Error(`There was an error, here is the request payload ${JSON.stringify(req.body)}`));
-    console.log("ebbebe")
     return res.status(statusCode).json({
         status: false,
         message: handler.getMessage(message) || message,

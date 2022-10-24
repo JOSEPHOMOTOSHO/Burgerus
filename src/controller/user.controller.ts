@@ -1,5 +1,5 @@
 import { Request, response, Response } from "express";
-import { registerUser, loginUser, updateUser } from "../services/user.service";
+import { registerUser, loginUser, updateUser, findUser } from "../services/user.service";
 import obj, { IGetUserAuthInfoRequest } from "../utilities/interface";
 import { sendErrorResponse, sendSuccessResponse } from "../utilities/response";
 
@@ -21,6 +21,7 @@ const login = async (req: Request, res: Response): Promise<any> => {
     try {
         let login = await loginUser(req.body);
         if (login.status) {
+            throw new Error("beans")
            return sendSuccessResponse(res, login.message, login.data, 200);
         }
         return sendErrorResponse(req,res, login.message, {}, 400)
@@ -42,8 +43,20 @@ const update = async(req: IGetUserAuthInfoRequest , res: Response): Promise<any>
     }
 }
 
+const getUser = async(req: IGetUserAuthInfoRequest , res:Response ) : Promise<any> => {
+   try{
+    const foundUser = await findUser({_id:req.user && req.user._id});
+    if(foundUser.status){
+        return sendSuccessResponse(res,foundUser.message,foundUser.data,200)
+    }
+    return sendErrorResponse(req,res,foundUser.message,{},400)
+   }catch(err){
+    return sendErrorResponse(req,res,"UNKNOWN_ERROR",{},500)
+   }
+}
 export {
     register,
     login,
-    update
+    update,
+    getUser
 }

@@ -17,6 +17,6 @@ const menuSchema: Schema = new Schema({
 
 }, { timestamps: true })
 
-const menu: Model<any> = model('menu', menuSchema)
+const Menu: Model<any> = model('menu', menuSchema)
 
-export default menu
+export default Menu

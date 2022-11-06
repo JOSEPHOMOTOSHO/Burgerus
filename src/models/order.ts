@@ -1,38 +1,45 @@
-import { Schema, model, Model } from "mongoose"
+import { Schema, model, Model } from 'mongoose';
 
-const orderSchema: Schema = new Schema({
+const orderSchema: Schema = new Schema(
+  {
     customer: {
-        type: Schema.Types.ObjectId,
-        ref: "user",
-        required: true
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+      required: true,
     },
     items: [
-        {
-            name: String,
-            price: Number,
-            shipping: Number,
-            quantity: Number,
-            menu: {
-                type: Schema.Types.ObjectId,
-                ref: "menu",
-                required: true,
-            },
+      {
+        name: String,
+        price: Number,
+        shipping: Number,
+        quantity: Number,
+        menu: {
+          type: Schema.Types.ObjectId,
+          ref: 'menu',
+          required: true,
         },
+      },
     ],
     totalAmount: {
-        type: Number,
-        default: 0
+      type: Number,
+      default: 0,
+    },
+    totalShipping: {
+      type: Number,
+      default: 0,
     },
     config: Object,
     reference: String,
     transaction: Object,
     isPaid: {
-        type: Boolean,
-        dafault: false,
+      type: Boolean,
+      dafault: false,
     },
     delivery: String,
-}, { timestamps: true })
+  },
+  { timestamps: true }
+);
 
-const order: Model<any> = model('order', orderSchema)
+const Order: Model<any> = model('order', orderSchema);
 
-export default order
+export default Order;
